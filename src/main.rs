@@ -4,13 +4,11 @@ mod packages;
 mod uptime;
 use crate::{host::get_host, memory::Memory, packages::get_packages_count, uptime::Uptime};
 use colored::*;
-use whoami;
+
+#[cfg(not(unix))]
+compile_error!("Sorry, this app works only with unix systems");
 
 fn main() {
-    if !cfg!(unix) {
-        panic!("Sorry, this app works only with unix systems")
-    }
-
     println!(
         r#"
   /、          {username}@{hostname}

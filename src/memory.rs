@@ -19,7 +19,7 @@ impl Memory {
                     .trim()
                     .parse()
                     .expect("Failed to parse a memory value");
-                (key.to_owned(), Memory::to_bites(mem, unit))
+                (key.to_owned(), Self::to_bites(mem, unit))
             })
             .collect::<HashMap<String, u64>>();
 
@@ -28,14 +28,19 @@ impl Memory {
         let available = if let Some(available) = fields.get("MemAvailable") {
             *available
         } else {
-            fields.get("MemFree").unwrap_or(&0)
-                + fields.get("SReclaimable").unwrap_or(&0)
-                + fields.get("Buffers").unwrap_or(&0)
-                + fields.get("Cached").unwrap_or(&0)
-                - fields.get("Shmem").unwrap_or(&0)
+            // Linux < 3.14 may not have MemAvailable in /proc/meminfo
+            // https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
+
+            fields
+                .get("MemFree")
+                .unwrap_or(&0)
+                .saturating_add(*fields.get("SReclaimable").unwrap_or(&0))
+                .saturating_add(*fields.get("Buffers").unwrap_or(&0))
+                .saturating_add(*fields.get("Cached").unwrap_or(&0))
+                .saturating_sub(*fields.get("Shmem").unwrap_or(&0))
         };
 
-        Ok(Memory {
+        Ok(Self {
             total,
             used: total - available,
         })
@@ -53,13 +58,11 @@ impl Memory {
 
 impl Display for Memory {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(
-            format!(
-                "{}M / {}M",
-                &self.used / 1024 / 1024,
-                &self.total / 1024 / 1024
-            )
-            .as_str(),
+        write!(
+            f,
+            "{}M / {}M",
+            self.used / 1024 / 1024,
+            self.total / 1024 / 1024
         )
     }
 }
