@@ -1,8 +1,8 @@
 mod host;
 mod memory;
-mod packages;
+mod package_managers;
 mod uptime;
-use crate::{host::get_host, memory::Memory, packages::get_packages_count, uptime::Uptime};
+use crate::{host::get_host, memory::Memory, package_managers::PackageManagers, uptime::Uptime};
 use colored::*;
 
 #[cfg(not(unix))]
@@ -24,7 +24,10 @@ fn main() {
         host = get_host().unwrap_or("Unknown".to_owned()),
         uptime = Uptime::new().unwrap_or_default(),
         memory = Memory::new().unwrap_or_default(),
-        pkgs = get_packages_count().unwrap_or(0),
+        pkgs = PackageManagers::new()
+            .count_pkgs_by_distro()
+            .expect("Failed to get package manager for this distro !")
+            .expect("Failed to count packages in this distro !"),
         os_field = wrap_field("os"),
         host_field = wrap_field("host"),
         memory_field = wrap_field("memory"),
