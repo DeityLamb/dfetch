@@ -7,10 +7,9 @@ However, maintaining clean code is also a priority.. <br>
 ![example](assets/example.png)
 
 ### supports the following package managers
-I plan to add support for each
 
 - xbps ( [Void Linux](https://voidlinux.org/) )
 - pacman ( [Arch Linux](https://archlinux.org/) )
-
+- emerge ( [Gentoo Linux](https://www.gentoo.org/) )
 
 btw, i'll be happy if somebody send some cool ascii cat arts in issues :point_right::point_left:
