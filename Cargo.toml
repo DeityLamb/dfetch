@@ -13,4 +13,4 @@ strip = true
 
 [dependencies]
 colored = "2.0"
-whoami = "1.4"
+whoami = "1.5"
