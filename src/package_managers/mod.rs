@@ -1,7 +1,8 @@
+mod alpine;
+mod emerge;
 mod package_manager;
 mod pacman;
 mod xbps;
-mod emerge;
 use std::vec;
 use std::{
     fs::File,
@@ -10,6 +11,7 @@ use std::{
 
 use package_manager::PackageManager;
 
+use self::alpine::AlpinePackageManager;
 use self::emerge::EmergePackageManager;
 use self::pacman::PacmanPackageManager;
 use self::xbps::XBPSPackageManager;
@@ -19,6 +21,7 @@ const OS_RELEASE_FILE: &str = "/etc/os-release";
 const XBPS: XBPSPackageManager = XBPSPackageManager {};
 const PACMAN: PacmanPackageManager = PacmanPackageManager {};
 const EMERGE: EmergePackageManager = EmergePackageManager {};
+const ALPINE: AlpinePackageManager = AlpinePackageManager {};
 
 pub struct PackageManagers {
     managers: Vec<&'static dyn PackageManager>,
@@ -26,18 +29,18 @@ pub struct PackageManagers {
 impl PackageManagers {
     pub fn new() -> Self {
         Self {
-            managers: vec![&XBPS, &PACMAN, &EMERGE],
+            managers: vec![&XBPS, &PACMAN, &EMERGE, &ALPINE],
         }
     }
 
     pub fn count_pkgs_by_distro(&self) -> Option<io::Result<u64>> {
         io::BufReader::new(File::open(OS_RELEASE_FILE).expect("Failed to open os-release file !"))
             .lines()
-            .flatten()
+            .map_while(Result::ok)
             .filter(|line| line.starts_with("ID") || line.starts_with("ID_LIKE"))
             .find_map(|line| {
                 let distro_id = line.split_once('=').map(|(_, id)| id.trim_matches('"'))?;
-                
+
                 self.managers
                     .iter()
                     .find(|manager| manager.is_relative_distro_id(distro_id))
