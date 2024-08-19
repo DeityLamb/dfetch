@@ -9,6 +9,7 @@ However, maintaining clean code is also a priority.. <br>
 ### supports the following package managers
 
 - xbps ( [Void Linux](https://voidlinux.org/) )
+- apk ( [Alpine Linux](https://wiki.alpinelinux.org/wiki/Main_Page) )
 - pacman ( [Arch Linux](https://archlinux.org/) )
 - emerge ( [Gentoo Linux](https://www.gentoo.org/) )
 
