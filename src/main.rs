@@ -2,7 +2,7 @@ mod host;
 mod memory;
 mod package_managers;
 mod uptime;
-use crate::{host::get_host, memory::Memory, package_managers::PackageManagers, uptime::Uptime};
+use crate::{host::get_host, package_managers::PackageManagers};
 use colored::*;
 
 #[cfg(not(unix))]
@@ -22,8 +22,8 @@ fn main() {
         hostname = whoami::hostname().yellow().bold(),
         os = whoami::distro(),
         host = get_host().unwrap_or("Unknown".to_owned()),
-        uptime = Uptime::new().unwrap_or_default(),
-        memory = Memory::new().unwrap_or_default(),
+        uptime = uptime::get().unwrap_or_default(),
+        memory = memory::get().unwrap_or_default(),
         pkgs = PackageManagers::new()
             .count_pkgs_by_distro()
             .expect("Failed to get package manager for this distro !")
