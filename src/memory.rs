@@ -6,7 +6,7 @@ use std::{collections::HashMap, fmt::Display, fs, io};
 pub struct Memory(u64, u64);
 
 static PATH: &str = "/proc/meminfo";
-static MB: u64 = 1024 * 1024;
+static MB: u64 = 1000 * 1000;
 
 impl Display for Memory {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -50,8 +50,8 @@ pub fn get() -> io::Result<Memory> {
 
 fn to_bites(value: u64, unit: &str) -> u64 {
     match unit {
-        "kB" => 1024 * value,
-        "" => 1 * value,
+        "kB" => 1000 * value,
+        "" => value,
         _ => todo!(),
     }
 }
