@@ -4,7 +4,8 @@ The main focus of this app is on **execution speed**. `(neofetch is painfully sl
 I'm trying to minimize the use of external libraries where the required functionality isn't complex. <br>
 However, maintaining clean code is also a priority.. <br>
 
-![example](assets/example.png)
+<img width="40%" alt="image" src="https://github.com/user-attachments/assets/85c006b2-c604-4346-b24a-8a515a1b3fd2" />
+
 
 ### supports the following package managers
 
