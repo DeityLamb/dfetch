@@ -29,7 +29,7 @@ impl PackageManager for XBPSPackageManager {
 
         Ok(io::BufReader::new(File::open(file.path())?)
             .lines()
-            .flatten()
+            .map_while(Result::ok)
             .filter(|line| line.contains("<key>repository</key>"))
             .count() as u64)
     }

@@ -19,8 +19,7 @@ impl PackageManager for EmergePackageManager {
             .flatten()
             .filter(|entry| entry.metadata().is_ok_and(|v| v.is_dir()))
             .flat_map(|v| fs::read_dir(v.path()).map(|v| v.count()))
-            .fold(0, |acc, count| acc + count as u64)
-    )
+            .fold(0, |acc, count| acc + count as u64))
     }
 
     fn is_available(&self) -> bool {

@@ -19,7 +19,10 @@ fn main() {
   じ しˍ,)ノ   {memory_field:<width$} {memory}
 "#,
         username = whoami::username().yellow().bold(),
-        hostname = whoami::hostname().yellow().bold(),
+        hostname = whoami::fallible::hostname()
+            .unwrap_or_else(|_| "unknown".to_owned())
+            .yellow()
+            .bold(),
         os = whoami::distro(),
         host = get_host().unwrap_or("Unknown".to_owned()),
         uptime = uptime::get().unwrap_or_default(),
