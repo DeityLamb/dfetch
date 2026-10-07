@@ -16,13 +16,3 @@ Prebuilt static (musl) and glibc binaries for `x86_64` and `aarch64` are attache
 ```sh
 cargo install --git https://github.com/DeityLamb/dfetch
 ```
-
-### releasing
-
-Bump `version` in `Cargo.toml`, commit, then push a matching tag:
-
-```sh
-git tag v0.1.2 && git push origin v0.1.2
-```
-
-The `Release` workflow builds all targets and publishes a GitHub release with generated notes.
